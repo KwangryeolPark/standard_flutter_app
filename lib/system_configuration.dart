@@ -167,7 +167,7 @@ Future initSystemConfiguration() async {
 
     for(var list in systemConfiguration.keys.toList()) debugPrint(systemConfiguration[list].toString());  //모든 상태 조회
 
-    if(systemConfiguration['alreadySetted'] == 'false') {
+    if(systemConfiguration['alreadySetted'].status == 'false') {
       debugPrint('$systemConfigurationDatabaseName Databse에 데이터가 없습니다.');
       debugPrint('Default data를 넣습니다.');
 
