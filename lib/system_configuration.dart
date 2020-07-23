@@ -48,8 +48,14 @@ class SystemConfigurationDatabase {
 
   Future<Map<String, SystemConfiguration>> systemConfigurations(String tableName) async {
     final List<Map<String, dynamic>> maps = await database.query(tableName);
+    List<SystemConfiguration> list = List.generate(maps.length, (index)  {
+      return SystemConfiguration(
+          name: maps[index]['name'],
+          status: maps[index]['status']
+      );
+    });
     return Map.fromIterable(
-        maps,
+        list,
         key: (element) => element.name,
         value: (element) => element
     );
@@ -95,14 +101,34 @@ SystemConfigurationDatabase(databaseName: systemConfigurationDatabaseName);
 
 
 Map<String, SystemConfiguration> defaultSystemConfiguration = {
-  'systemConfigurationCount' : SystemConfiguration(name: 'systemConfigurationCount', status:'2'),
+  'systemConfigurationCount' : SystemConfiguration(name: 'systemConfigurationCount', status:'5'),
   'alreadySetted' : SystemConfiguration(name: 'alreadySetted', status: 'false'),
+  'BiggestNewPt_num' : SystemConfiguration(name: 'BiggestNewPt_num', status: '0'),
+  'GPSRecord' : SystemConfiguration(name: 'GPSRecord', status: 'On'),
+  'Vibration' : SystemConfiguration(name: 'Vibration', status: 'On'),
 };
 Map<String, SystemConfiguration> systemConfiguration;
+/*    //수정하기 전에 있던 데이터 값들 //참고용
+
+List<Status> switchStatus = [
+  Status(id: 0, name: 'ReadIt', status: 'On'), //Read It
+  Status(id: 1, name: 'GPSRecord', status: 'On'), //GPS Record
+  Status(id: 2, name: '2', status: 'On'),
+  Status(id: 3, name: '3', status: 'On'),
+  Status(id: 4, name: '4', status: 'On'),
+  Status(id: 5, name: '5', status: 'On'),
+  Status(id: 6, name: '6', status: 'On'),
+  Status(id: 7, name: 'OpenCount', status: '0'),
+  Status(id: 8, name: 'BiggestNewPt_num', status: '0'),
+  Status(id: 9, name: '9', status: '0'),
+  Status(id: 10, name: 'Information', status: 'On') //Vibration
+];
+ */
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -132,6 +158,8 @@ Future initSystemConfiguration() async {
     systemConfiguration =
     await systemConfigurationDatabase.systemConfigurations(
         systemConfigurationTableName); //read data from database and store in systemConfiguration Map
+    debugPrint('값 불러왔습니다.');
+
     if(systemConfiguration['alreadySetted'] == false) {
       debugPrint('$systemConfigurationDatabaseName Databse에 데이터가 없습니다.');
       debugPrint('Default data를 넣습니다.');
