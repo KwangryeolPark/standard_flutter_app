@@ -11,6 +11,11 @@ class SystemConfiguration {
     'name' : name,
     'status' : status,
   };
+
+  @override
+  String toString() {
+    return "name : " + name + "\tstatus : " + status;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -160,7 +165,9 @@ Future initSystemConfiguration() async {
         systemConfigurationTableName); //read data from database and store in systemConfiguration Map
     debugPrint('값 불러왔습니다.');
 
-    if(systemConfiguration['alreadySetted'] == false) {
+    for(var list in systemConfiguration.keys.toList()) debugPrint(systemConfiguration[list].toString());  //모든 상태 조회
+
+    if(systemConfiguration['alreadySetted'] == 'false') {
       debugPrint('$systemConfigurationDatabaseName Databse에 데이터가 없습니다.');
       debugPrint('Default data를 넣습니다.');
 
