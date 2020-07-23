@@ -127,6 +127,11 @@ Future initSystemConfiguration() async {
     systemConfiguration = defaultSystemConfiguration;
     debugPrint('Default data 넣기 끝');
   } else {  //there are rows in the table, and it means it is not the first time
+    debugPrint('기존 데이터가 있습니다.');
+    debugPrint('값 불러오기');
+    systemConfiguration =
+    await systemConfigurationDatabase.systemConfigurations(
+        systemConfigurationTableName); //read data from database and store in systemConfiguration Map
     if(systemConfiguration['alreadySetted'] == false) {
       debugPrint('$systemConfigurationDatabaseName Databse에 데이터가 없습니다.');
       debugPrint('Default data를 넣습니다.');
@@ -138,11 +143,6 @@ Future initSystemConfiguration() async {
       systemConfiguration = defaultSystemConfiguration;   //copy the default data to actual used data
       debugPrint('Default data 넣기 끝');
     } else {
-      debugPrint('기존 데이터가 있습니다.');
-      debugPrint('값 불러오기');
-      systemConfiguration =
-      await systemConfigurationDatabase.systemConfigurations(
-          systemConfigurationTableName); //read data from database and store in systemConfiguration Map
       int dataCntInDatabase = int.parse(
           systemConfiguration['systemConfigurationCount']
               .status); //the number of data in stored database
